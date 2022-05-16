@@ -30,7 +30,7 @@ const Blog = ({navigation}) => {
     setCurrent(value => ++value);
   };
   const toDetail = blogpath => () => {
-    navigation.navigate('博客详情', {
+    navigation.navigate('blogdetail', {
       blogpath,
     });
   };
