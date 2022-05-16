@@ -1,17 +1,16 @@
 import React from 'react';
 import {Text, View, Image, StyleSheet} from 'react-native';
-import nav from '../../src/static/images/nav.png';
 import me from '../../src/static/images/logo.webp';
 
-const Home = ({navigation}) => {
-  const touchNav = () => {
-    // navigation.openDrawer();
-  };
+const Home = () => {
+  // const touchNav = () => {
+  //   // navigation.openDrawer();
+  // };
   return (
     <View style={styles.app}>
-      <View onTouchStart={touchNav} style={styles.nav}>
+      {/* <View onTouchStart={touchNav} style={styles.nav}>
         <Image style={styles.nav_img} source={nav} />
-      </View>
+      </View> */}
       <View style={styles.main}>
         <View style={styles.main_me}>
           <Image style={styles.me} source={me} />
