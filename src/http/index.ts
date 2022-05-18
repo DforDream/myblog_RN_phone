@@ -1,9 +1,8 @@
 import Request from './request';
+import Config from '../config/env';
 
 const request = new Request({
-  // baseURL: import.meta.env.VITE_BASE_URL,
-  // baseURL: 'http://192.168.18.109:3300',
-  baseURL: 'http://192.168.0.106:3300',
+  baseURL: Config.API_BASE_URL,
   timeout: 1000 * 10,
   interceptors: {
     requestInterceptors: config => {

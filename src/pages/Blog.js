@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Text, View, TextInput, Image, StyleSheet, FlatList} from 'react-native';
+import {FIND_BLOG} from '../http/api';
 import logo from '../static/images/logo.webp';
 import request from '../http';
 
@@ -13,9 +14,8 @@ const Blog = ({navigation}) => {
     setSearch(text);
   };
   const searchBlog = () => {
-    if (search !== '') {
-      setTitle(search);
-    }
+    setTitle(search);
+    setCurrent(1);
   };
   const refresh = () => {
     setRefreshing(true);
@@ -29,15 +29,16 @@ const Blog = ({navigation}) => {
     setRefreshing(true);
     setCurrent(value => ++value);
   };
-  const toDetail = blogpath => () => {
+  const toDetail = (blogpath, name) => () => {
     navigation.navigate('blogdetail', {
       blogpath,
+      name,
     });
   };
   useEffect(() => {
     request
       .get({
-        url: '/blog/findblog',
+        url: FIND_BLOG,
         data: {
           title,
           current,
@@ -54,8 +55,6 @@ const Blog = ({navigation}) => {
               });
               return value;
             });
-          } else {
-            alert('没有更多数据');
           }
         }
         setRefreshing(false);
@@ -67,7 +66,7 @@ const Blog = ({navigation}) => {
       <View
         style={styles.blog_list}
         key={item.id}
-        onTouchEndCapture={toDetail(item.blogpath)}>
+        onTouchEndCapture={toDetail(item.blogpath, item.title)}>
         <Text style={styles.title}>{item.title}</Text>
         <View style={styles.user}>
           <Image style={styles.logo} source={logo} />
@@ -82,7 +81,7 @@ const Blog = ({navigation}) => {
       <TextInput
         value={search}
         onChangeText={changeSearch}
-        onEndEditing={searchBlog}
+        onSubmitEditing={searchBlog}
         placeholder="请输入想搜索的博客"
         style={styles.input}
       />
@@ -96,7 +95,6 @@ const Blog = ({navigation}) => {
         onEndReachedThreshold={0.05}
         onEndReached={scrolltoEnd}
         ListEmptyComponent={() => <Text>暂时还没有博客。。。</Text>}
-        // initialNumToRender={7}
       />
     </View>
   );
@@ -110,10 +108,12 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: '#fff',
+    marginBottom: 10,
   },
   flat_list: {
     flex: 1,
-    padding: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   blog_list: {
     width: '100%',

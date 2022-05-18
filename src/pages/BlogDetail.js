@@ -1,26 +1,40 @@
-import React, {useEffect} from 'react';
-import {View} from 'react-native';
-import {WebView} from 'react-native-webview';
-// import request from '../http';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, ScrollView} from 'react-native';
+import Markdown from 'react-native-markdown-display';
+import request from '../http';
+import {GET_BLOG} from '../http/api';
 
 const BlogDetail = ({route}) => {
   const {blogpath} = route.params;
-  // useEffect(() => {
-  //   request
-  //     .get({
-  //       url: '/blog/getblog',
-  //       data: {
-  //         blogpath,
-  //       },
-  //     })
-  //     .then(res => {
-  //       console.log(res.data.data);
-  //     });
-  // }, []);
+  const [detail, setDetail] = useState('');
+  useEffect(() => {
+    request
+      .get({
+        url: GET_BLOG,
+        data: {
+          blogpath,
+        },
+      })
+      .then(res => {
+        setDetail(res.data.data);
+      });
+  }, []);
   return (
     <View>
-      <WebView source={{uri: `http://192.168.0.106:3300${blogpath}`}} />
+      <ScrollView contentContainerStyle={styles.detail}>
+        <Markdown>{detail}</Markdown>
+      </ScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  detail: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    backgroundColor: '#fff',
+  },
+});
+
 export default BlogDetail;

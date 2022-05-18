@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 const DrawerWrap = () => {
   return (
     <Drawer.Navigator
-      initialRouteName="我的博客"
+      initialRouteName="首页"
       screenOptions={{
         headerStyle: {
           backgroundColor: '#122B32',
@@ -47,7 +47,9 @@ const App = () => {
         <Stack.Screen
           name="blogdetail"
           component={BlogDetail}
-          options={{headerTitle: '博客详情'}}
+          options={({route}) => ({
+            headerTitle: route.params.name,
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>
